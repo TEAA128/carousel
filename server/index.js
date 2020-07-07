@@ -39,4 +39,4 @@ app.post('/api/users', UserController.post);
 app.patch('/api/users/:placeId', UserController.update)
 
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(port, () => console.log(`App is listening at http://localhost:${port}`))
