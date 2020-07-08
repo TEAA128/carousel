@@ -9,7 +9,7 @@
     "start": "nodemon server/index.js",
     "db-seed": "node database/seed.js",
     "test": "jest",
-    "lint": "eslint database"
+    "lint": "eslint database server --fix"
   },
   "repository": {
     "type": "git",

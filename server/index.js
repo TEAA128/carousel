@@ -1,31 +1,18 @@
 const express = require('express');
 const path = require('path');
-
 const app = express();
 const port = 3003;
-
-// setup Express Static files
-app.use('/carousel', express.static(path.join(__dirname, '..', 'client', 'dist')));
-
-// init controller
-
-// init parser
 const parser = require('body-parser');
-
-app.use(parser.json());
-
-// init morgan
 const morgan = require('morgan');
-
-app.use(morgan('dev'));
-
-// init cors
 const cors = require('cors');
 const UserController = require('./Controller/user.js');
 const PlaceController = require('./Controller/place.js');
 
+app.use(parser.json());
+app.use(morgan('dev'));
 app.use(cors());
 
+app.use('/carousel', express.static(path.join(__dirname, '..', 'client', 'dist')));
 // setup proxy
 app.set('trust proxy', (ip) => {
   if (ip === 'localhost:3000') return true;
