@@ -24,25 +24,24 @@ const sampleUser = () =>{
 }
 
 const awsImgAdd = [
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-albertoeger-PmstY5S5nKA.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-chuttersnap-E_1HgzKm4Vw.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-couriina-OsgLI_awdk0.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-cowomen-t9ovV7r-FJU.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-curology-6CJg-fOTYs4.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-creatveight-zzMb7jacyBc.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-devano23-DU8Z5djVJtg.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-evphotocinema-7SY3pedipaA.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-evphotocinema-E8Qyl8zj3XI.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-evphotocinema-dTCNj6ptvG0.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-evphotocinema-y0QpNoSx4eI.jpg`,
-`https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-filios_sazeides-oe6GzjEyHns.jpg`,
-]
-
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-albertoeger-PmstY5S5nKA.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-albertoeger-PmstY5S5nKA.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-chuttersnap-E_1HgzKm4Vw.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-chuttersnap-E_1HgzKm4Vw.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-couriina-OsgLI_awdk0.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-couriina-OsgLI_awdk0.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-cowomen-t9ovV7r-FJU.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-cowomen-t9ovV7r-FJU.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-curology-6CJg-fOTYs4.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-curology-6CJg-fOTYs4.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-creatveight-zzMb7jacyBc.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-creatveight-zzMb7jacyBc.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-devano23-DU8Z5djVJtg.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-devano23-DU8Z5djVJtg.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-evphotocinema-7SY3pedipaA.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-evphotocinema-7SY3pedipaA.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-evphotocinema-E8Qyl8zj3XI.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-evphotocinema-E8Qyl8zj3XI.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-evphotocinema-dTCNj6ptvG0.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-evphotocinema-dTCNj6ptvG0.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-evphotocinema-y0QpNoSx4eI.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-evphotocinema-y0QpNoSx4eI.jpg`,
+  `https://myhackreactorimghost.s3-us-west-1.amazonaws.com/bulksplash-filios_sazeides-oe6GzjEyHns.jpg`,	  `https://d2gavsb72y0czz.cloudfront.net/bulksplash-filios_sazeides-oe6GzjEyHns.jpg`,
+  ];
 
 const samplePlaces = () => {
   return new Promise( (resolve, reject) =>{
     let result = [];
-    for(let i=0;i<awsImgAdd.length;i++){
+    for (let i=0; i<awsImgAdd.length; i++) {
       let tempObj = {};
       tempObj.picture = awsImgAdd[i];
       tempObj.type = 'Private Room';
@@ -57,9 +56,9 @@ const samplePlaces = () => {
       result.push(tempObj);
     }
     console.log(result);
-    if(result != null){
+    if (result != null) {
       resolve(result);
-    }else{
+    } else{
       reject(new Error('no result return!'))
     }
   })

@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack -d --watch",
-    "server": "nodemon server/index.js",
-    "db:setup": "node database/seed.js",
-    "test": "jest"
+    "react-dev": "webpack -d --watch",
+    "build": "webpack --mode=production",
+    "start": "nodemon server/index.js",
+    "db-seed": "node database/seed.js",
+    "test": "jest",
+    "lint": "eslint database"
   },
   "repository": {
     "type": "git",
