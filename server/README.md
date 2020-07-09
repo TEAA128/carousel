@@ -81,7 +81,7 @@
 ```
 
 ### Update user's list of liked places
-  * PATCH `/api/user/:userId`
+  * PATCH `/api/users/:userId`
 
 **Path Parameters:**
   * `userId` user id
