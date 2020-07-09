@@ -1,10 +1,10 @@
 ## Server API
 
-### Get place info
-  * GET `/api/places/:id`
+### Get N places in same location
+  * GET `/api/places/:location`
 
 **Path Parameters:**
-  * `id` place id
+  * `location` place location
 
 **Success Status Code:** `200`
 **Success Status Code:** `400`
@@ -13,110 +13,97 @@
 
 ```json
     [{
-      "picture": "String",
-      "type": "String",
-      "bed": "String",
+      "placeId": "Number",
+      "title": "String",
+      "pictureUrl": "String",
+      "location": "String",
+      "typeOfRoom": "String",
+      "bedsNumber": "Number",
       "rating": "Number",
       "totalReview": "Number",
-      "hostplus": "Boolean",
-      "superhost": "Boolean",
-      "title": "String",
+      "plusHost": "Boolean",
+      "superHost": "Boolean",
       "price": "Number",
-      "src": "String"
-    }]
+      "link": "String"
+    },
+    ...
+    ]
 ```
 
 ### Get user info
-  * GET `/api/users/:id`
+  * GET `/api/users/:userId`
 
 **Path Parameters:**
-  * `id` user id
+  * `userId` user id
 
 **Success Status Code:** `200`
-**Success Status Code:** `400`
+**Error  Status Code:** `400`
 
 **Returns:** JSON
 
 ```json
     {
+      "userId": "Number",
       "userName": "String",
       "lists": [
-        {"listName": "String", "places": [ {"placeId": "Number"} ] }
+        {
+          "listId": "Number", "listName": "String", "places": [ {"placeId": "Number"} ...]
+        }
+        ...
       ]
     }
 ```
 
+### Create new list of liked places
+  * POST `/api/users/:userId`
 
-
-
-
-### Add restaurant
-  * POST `/api/restaurants`
+**Path Parameters:**
+  * `userId` user id
 
 **Success Status Code:** `201`
+**Error Status Code:** `400`
 
 **Request Body**: Expects JSON with the following keys.
 
 ```json
     {
-      "name": "String",
-      "address": "String",
-      "phone": "String",
-      "website": "String",
-      "googleMap": "String location",
-      "cost": "Number"
+      "userId": "Number",
+      "listName": "Number",
+      "placeId": "Number",
     }
 ```
 
-
-### Update restaurant info
-  * PATCH `/api/restaurant/:id`
+### Update user's list of liked places
+  * PATCH `/api/user/:userId`
 
 **Path Parameters:**
-  * `id` restaurant id
+  * `userId` user id
 
 **Success Status Code:** `204`
-
-**Request Body**: Expects JSON with any of the following keys (include only keys to be updated)
-
-```json
-    {
-      "name": "String",
-      "address": "String",
-      "phone": "String",
-      "website": "String",
-      "cost": "Number"
-    }
-```
-
-### Delete restaurant
-  * DELETE `/api/restaurant/:id`
-
-**Path Parameters:**
-  * `id` restaurant id
-
-**Success Status Code:** `204`
-
-### Add image to restaurant
-  * POST `/api/restaurants/:restaurantId/images`
-
-**Path Parameters:**
-
-  * `restaurantId` restaurant id
-
-**Success Status Code:** `201`
 
 **Request Body**: Expects JSON with the following keys.
 
 ```json
     {
-      "user": "String",
-      "image": "image URL",
-      "description": "String",
-      "posted": "YYYY-MM-MM",
-      "googleMap": "String location",
-      "category": "String",
-      "restaurant": "id Number",
-      "cost": "Number"
+      "listId": "Number",
+      "placeId": "Number",
+    }
+```
+
+### Delete place from the list
+  * DELETE `/api/users/:userId`
+
+**Path Parameters:**
+  * `userId` user id
+
+**Success Status Code:** `204`
+**Error Status Code:** `400`
+
+**Request Body**: Expects JSON with the following keys.
+
+```json
+    {
+      "listId": "Number",
+      "placeId": "Number",
     }
 ```
