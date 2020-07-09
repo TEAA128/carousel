@@ -1,13 +1,20 @@
 ## Server API
 
-### Get N places in same location
-  * GET `/api/places/:location`
-
-**Path Parameters:**
-  * `location` place location
+### Get n-places in same location with relatively the same number of beds and price
+  * GET `/api/places`
 
 **Success Status Code:** `200`
 **Success Status Code:** `400`
+
+**Request Query**: Expects JSON with the following keys.
+
+```json
+    {
+      "zipCode": "Number",
+      "bedsNumber": "Number",
+      "price": "Number",
+    }
+```
 
 **Returns:** JSON
 
@@ -16,7 +23,7 @@
       "placeId": "Number",
       "title": "String",
       "pictureUrl": "String",
-      "location": "String",
+      "zipCode": "Number",
       "typeOfRoom": "String",
       "bedsNumber": "Number",
       "rating": "Number",
