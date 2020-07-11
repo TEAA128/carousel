@@ -16,7 +16,7 @@ CREATE TABLE place_by_zipCode (
   price smallint,
   link text,
   PRIMARY KEY (zipCode, bedsNumber, price)
-)
+) WITH CLUSTERING ORDER BY (bedsNumber ASC, price ASC);
 
 /* for GET:userId and POST:userId, also when user has no like lists */
 CREATE TABLE user_by_userId (
@@ -27,7 +27,7 @@ CREATE TABLE user_by_userId (
   likeId uuid,
   placeId uuid,
   PRIMARY KEY (userId, listId)
-)
+) WITH CLUSTERING ORDER BY (listId ASC);
 
 /* for PATCH req and DELETE req (api always sends userId+listId, cause user HAS like lists) */
 CREATE TABLE user_by_userId_and_listId (
@@ -38,20 +38,6 @@ CREATE TABLE user_by_userId_and_listId (
   likeId uuid,
   placeId uuid,
   PRIMARY KEY ((userId, listId), placeId)
-)
-
-
-/*
-CREATE TABLE user_by_userId (
-  userId uuid,
-  userName text,
-  listId uuid,
-  listName text,
-  likeId uuid,
-  placeId uuid,
-  PRIMARY KEY (userId, listId)
-)
-*/
-
+) WITH CLUSTERING ORDER BY (placeId, DESC);
 
 
