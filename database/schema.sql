@@ -1,4 +1,3 @@
--- DROP DATABASE IF EXISTS carousel;
 CREATE DATABASE carousel;
 
 \connect carousel;
@@ -6,7 +5,7 @@ CREATE DATABASE carousel;
   CREATE TABLE places (
     placeId SERIAL PRIMARY KEY,
     title VARCHAR(30) NOT NULL,
-    pictureUrl VARCHAR (100) NOT NULL,
+    pictureUrl VARCHAR (500) NOT NULL,
     zipCode INTEGER NOT NULL,
     typeOfRoom VARCHAR(30) NOT NULL,
     bedsNumber SMALLINT NOT NULL,
@@ -15,27 +14,24 @@ CREATE DATABASE carousel;
     plusHost BOOLEAN,
     superHost BOOLEAN,
     price INTEGER NOT NULL,
-    link VARCHAR(2083) NOT NULL
+    link VARCHAR(500) NOT NULL
   );
 
   CREATE TABLE users (
     userId SERIAL PRIMARY KEY,
-    userName VARCHAR(30) NOT NULL,
-    user_created_at TIMESTAMP default CURRENT_TIMESTAMP
+    userName VARCHAR(30) NOT NULL
   );
 
   CREATE TABLE user_lists (
     listId SERIAL PRIMARY KEY,
     listName VARCHAR(30) NOT NULL,
-    userId INTEGER NOT NULL REFERENCES users ON DELETE CASCADE,
-    user_list_created_at TIMESTAMP default CURRENT_TIMESTAMP
+    userId INTEGER NOT NULL REFERENCES users ON DELETE CASCADE
   );
 
   CREATE TABLE user_likes (
     likeId serial PRIMARY KEY,
     listId INTEGER NOT NULL REFERENCES user_lists ON DELETE CASCADE,
-    placeId INTEGER NOT NULL REFERENCES places ON DELETE CASCADE,
-    user_like_created_at TIMESTAMP default CURRENT_TIMESTAMP
+    placeId INTEGER NOT NULL REFERENCES places ON DELETE CASCADE
   );
 
 

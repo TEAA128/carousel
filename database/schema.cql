@@ -1,15 +1,57 @@
-CREATE KEYSPACE place;
+CREATE KEYSPACE carousel WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
 
-CREATE TABLE place.place_by_id (
+USE carousel;
 
-  PRIMARY KEY (place_id),
+CREATE TABLE place_by_zipCode (
+  placeId uuid,
+  title text,
+  pictureUrl text,
+  zipCode smallint,
+  typeOfRoom text,
+  bedsNumber smallint,
+  rating float,
+  totalReview smallint,
+  plusHost boolean,
+  superHost boolean,
+  price smallint,
+  link text,
+  PRIMARY KEY (zipCode, bedsNumber, price)
 )
-  WITH comment = 'Q1. Find a place with its id';
 
-CREATE KEYSPACE user;
-
-CREATE TABLE user.user_id (
-
-  PRIMARY KEY( user_id, booking_id),
+/* for GET:userId and POST:userId, also when user has no like lists */
+CREATE TABLE user_by_userId (
+  userId uuid,
+  userName text,
+  listId uuid,
+  listName text,
+  likeId uuid,
+  placeId uuid,
+  PRIMARY KEY (userId, listId)
 )
-  WITH comment = 'Q2. Find user with user id';
+
+/* for PATCH req and DELETE req (api always sends userId+listId, cause user HAS like lists) */
+CREATE TABLE user_by_userId_and_listId (
+  userId uuid,
+  userName text,
+  listId uuid,
+  listName text,
+  likeId uuid,
+  placeId uuid,
+  PRIMARY KEY ((userId, listId), placeId)
+)
+
+
+/*
+CREATE TABLE user_by_userId (
+  userId uuid,
+  userName text,
+  listId uuid,
+  listName text,
+  likeId uuid,
+  placeId uuid,
+  PRIMARY KEY (userId, listId)
+)
+*/
+
+
+
