@@ -1,12 +1,14 @@
+DROP DATABASE IF EXISTS carousel;
 CREATE DATABASE carousel;
 
 \connect carousel;
 
+  DROP TABLE IF EXISTS places;
   CREATE TABLE places (
     placeId SERIAL PRIMARY KEY,
-    title VARCHAR(30) NOT NULL,
+    title VARCHAR(100) NOT NULL,
     pictureUrl VARCHAR (500) NOT NULL,
-    zipCode INTEGER NOT NULL,
+    zipCode VARCHAR(15) NOT NULL,
     typeOfRoom VARCHAR(30) NOT NULL,
     bedsNumber SMALLINT NOT NULL,
     rating real NOT NULL,
@@ -17,29 +19,35 @@ CREATE DATABASE carousel;
     link VARCHAR(500) NOT NULL
   );
 
+  DROP TABLE IF EXISTS users;
   CREATE TABLE users (
     userId SERIAL PRIMARY KEY,
     userName VARCHAR(30) NOT NULL
   );
 
+  DROP TABLE IF EXISTS user_lists;
   CREATE TABLE user_lists (
     listId SERIAL PRIMARY KEY,
     listName VARCHAR(30) NOT NULL,
-    userId INTEGER NOT NULL REFERENCES users(userId) ON DELETE CASCADE
+    userId INTEGER REFERENCES users (userId)
   );
 
   CREATE TABLE user_likes (
-    likeId serial PRIMARY KEY,
-    listId INTEGER NOT NULL REFERENCES user_lists(listId) ON DELETE CASCADE,
-    placeId INTEGER NOT NULL REFERENCES places(placeId) ON DELETE CASCADE
+    likeId SERIAL PRIMARY KEY,
+    listId INTEGER REFERENCES user_lists(listId),
+    placeId INTEGER REFERENCES places(placeId)
   );
 
+-- import places
+COPY places(place_gen_id,title,pictureUrl,zipCode,typeOfRoom,bedsNumber,rating,totalReview,plusHost,superHost,price,link)
+FROM '/Users/ozzy_chel/Projects/sdc/carousel/database/csvPostgresData/generatePlace1.csv' DELIMITER ',' CSV HEADER;
 
--- INSERT INTO places (title, pictureUrl, zipCode, typeOfRoom, bedsNumber, rating, totalReview, plusHost, superHost, price, link) VALUES ('Cozy hut on the beach', 'http://somethingn', 94166, 'Private room', 4, 4.85, 1189, true, false, 220, 'https://local');
+-- import users
+-- COPY users(user_gen_id,userName)
+-- FROM '/Users/ozzy_chel/Projects/sdc/carousel/database/csvPostgresData/generateUsers1.csv' DELIMITER ',' CSV HEADER;
 
--- INSERT INTO users (userName) VALUES ('Mick Jagger');
--- INSERT INTO users (userName) VALUES ('Robert Plant');
 
--- INSERT INTO user_lists (listName, userId) VALUES ('summer trip', (SELECT userId FROM users WHERE userName='Robert Plant'));
+-- import user_lists
+-- COPY users(user_gen_id,listName, user_gen_id)
+-- FROM '/Users/ozzy_chel/Projects/sdc/carousel/database/csvPostgresData/generateUserLists1.csv' DELIMITER ',' CSV HEADER;
 
--- INSERT INTO user_likes (listId, placeId) VALUES ((SELECT listId FROM user_lists WHERE listName='summer trip'), (SELECT placeId FROM places WHERE zipCode=94166));
