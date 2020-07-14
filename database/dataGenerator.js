@@ -27,16 +27,16 @@ function generatePlace(numberOfTitles, callback) {
 
   for (let i = counters.generatePlace + 1; i <= (numberOfTitles + counters.generatePlace); i++) {
     const obj = {
-      place_gen_id: i,
+      // place_gen_id: i,
       title: faker.lorem.sentence(),
-      pictureUrl: faker.image.imageUrl(),
-      zipCode: faker.address.zipCode(),
-      typeOfRoom: randomTypeOfRoom(),
-      bedsNumber: randomNumber(1, 20),
+      picture_url: faker.image.imageUrl(),
+      zip_code: faker.address.zipCode(),
+      type_of_room: randomTypeOfRoom(),
+      beds_number: randomNumber(1, 20),
       rating: randomRating(1, 5),
-      totalReview: randomNumber(0, 20000),
-      plusHost: faker.random.boolean(),
-      superHost: faker.random.boolean(),
+      total_review: randomNumber(0, 20000),
+      plus_host: faker.random.boolean(),
+      super_host: faker.random.boolean(),
       price: randomNumber(50, 500),
       link: faker.internet.url(),
     };
@@ -52,8 +52,8 @@ function generateUsers(numberOfTitles, callback) {
   const generatedData = [];
   for (let i = counters.generateUsers + 1; i <= (numberOfTitles + counters.generateUsers); i++) {
     const obj = {
-      user_gen_id: i,
-      userName: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      // user_gen_id: i,
+      user_name: `${faker.name.firstName()} ${faker.name.lastName()}`,
     };
     generatedData.push(obj);
   }
@@ -70,9 +70,9 @@ function generateUserLists(numberOfTitles, callback, perForeignKeyRepeatTimes = 
     let k = counter + 1;
     while (k <= perForeignKeyRepeatTimes + counter) {
       const obj = {
-        list_gen_id: k,
-        listName: `${faker.random.word()}`,
-        user_gen_id: i,
+        // list_gen_id: k,
+        list_name: `${faker.random.word()}`,
+        user_id_fk: i,
       };
       generatedData.push(obj);
       k++;
@@ -97,9 +97,8 @@ function generateUserLikes(numberOfLikesPerList, callback) {
     for (let k = counter + 1; k <= counter + mult; k++) {
       for (let x = counter2 + 1; x <= counter2 + numberOfLikesPerList; x++) {
         let obj = {
-          like_gen_id: x,
-          list_gen_id: k,
-          place_gen_id: i
+          list_id: k,
+          place_id: i
         }
         generatedData.push(obj);
       }
@@ -145,11 +144,11 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
 }
 
 //createDataHelper(funcName, numberOfFiles, numberOfEntitiesPerFile [perForeignKeyRepeatTimes]);
-createDataHelper(generatePlace, 4, 10);  //1mil
-createDataHelper(generateUsers, 4, 10); //1mil
-createDataHelper(generateUserLists, 4, 10, 3); // 12mil
+createDataHelper(generatePlace, 2, 10);  //1mil
+createDataHelper(generateUsers, 2, 10); //1mil
+createDataHelper(generateUserLists, 2, 10, 2);
 
 //createDataHelper(funcName, numberOfLikesPerList) - grabs info from already generated data
-createDataHelper(generateUserLikes, 2); //24mil
+createDataHelper(generateUserLikes, 3);
 
 console.log(counters);
