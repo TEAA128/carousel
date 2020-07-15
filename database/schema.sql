@@ -6,8 +6,8 @@ CREATE DATABASE carousel;
   DROP TABLE IF EXISTS places;
   CREATE TABLE places (
     place_id SERIAL PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
-    picture_url VARCHAR (500) NOT NULL,
+    title TEXT NOT NULL,
+    picture_url TEXT NOT NULL,
     zip_code VARCHAR(15) NOT NULL,
     type_of_room VARCHAR(30) NOT NULL,
     beds_number SMALLINT NOT NULL,
@@ -16,7 +16,7 @@ CREATE DATABASE carousel;
     plus_host BOOLEAN,
     super_host BOOLEAN,
     price INTEGER NOT NULL,
-    link VARCHAR(500) NOT NULL
+    link TEXT NOT NULL
   );
 
   DROP TABLE IF EXISTS users;
@@ -28,7 +28,7 @@ CREATE DATABASE carousel;
   DROP TABLE IF EXISTS user_lists;
   CREATE TABLE user_lists (
     list_id SERIAL PRIMARY KEY,
-    list_name VARCHAR(50) NOT NULL,
+    list_name TEXT NOT NULL,
     user_id_fk INTEGER REFERENCES users(user_id)
   );
 
@@ -39,27 +39,45 @@ CREATE DATABASE carousel;
     place_id INTEGER REFERENCES places(place_id)
   );
 
--- import places SELECT username
+-- import places
 COPY places(title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
-FROM '/Users/ozzy_chel/Projects/sdc/carousel/database/csvPostgresData/generatePlace1.csv' DELIMITER ',' CSV HEADER;
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generatePlace1.csv' DELIMITER ',' CSV HEADER;
 
 COPY places(title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
-FROM '/Users/ozzy_chel/Projects/sdc/carousel/database/csvPostgresData/generatePlace2.csv' DELIMITER ',' CSV HEADER;
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generatePlace2.csv' DELIMITER ',' CSV HEADER;
 
+COPY places(title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generatePlace3.csv' DELIMITER ',' CSV HEADER;
+
+COPY places(title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generatePlace4.csv' DELIMITER ',' CSV HEADER;
+-------------------------------
 -- import users
 COPY users(user_name)
-FROM '/Users/ozzy_chel/Projects/sdc/carousel/database/csvPostgresData/generateUsers1.csv' DELIMITER ',' CSV HEADER;
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUsers1.csv' DELIMITER ',' CSV HEADER;
 
 COPY users(user_name)
-FROM '/Users/ozzy_chel/Projects/sdc/carousel/database/csvPostgresData/generateUsers2.csv' DELIMITER ',' CSV HEADER;
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUsers2.csv' DELIMITER ',' CSV HEADER;
 
+COPY users(user_name)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUsers3.csv' DELIMITER ',' CSV HEADER;
+
+COPY users(user_name)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUsers4.csv' DELIMITER ',' CSV HEADER;
+-------------------------------
 -- import user_lists
 COPY user_lists(list_name,user_id_fk)
-FROM '/Users/ozzy_chel/Projects/sdc/carousel/database/csvPostgresData/generateUserLists1.csv' DELIMITER ',' CSV HEADER;
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUserLists1.csv' DELIMITER ',' CSV HEADER;
 
 COPY user_lists(list_name,user_id_fk)
-FROM '/Users/ozzy_chel/Projects/sdc/carousel/database/csvPostgresData/generateUserLists2.csv' DELIMITER ',' CSV HEADER;
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUserLists2.csv' DELIMITER ',' CSV HEADER;
 
+COPY user_lists(list_name,user_id_fk)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUserLists3.csv' DELIMITER ',' CSV HEADER;
+
+COPY user_lists(list_name,user_id_fk)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUserLists4.csv' DELIMITER ',' CSV HEADER;
+------------------------------
 -- import user_likes
 COPY user_likes(list_id,place_id)
-FROM '/Users/ozzy_chel/Projects/sdc/carousel/database/csvPostgresData/generateUserLikes1.csv' DELIMITER ',' CSV HEADER;
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUserLikes1.csv' DELIMITER ',' CSV HEADER;

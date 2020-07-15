@@ -27,7 +27,7 @@ function generatePlace(numberOfTitles, callback) {
 
   for (let i = counters.generatePlace + 1; i <= (numberOfTitles + counters.generatePlace); i++) {
     const obj = {
-      // place_gen_id: i,
+      place_gen_id: i,
       title: faker.lorem.sentence(),
       picture_url: faker.image.imageUrl(),
       zip_code: faker.address.zipCode(),
@@ -54,6 +54,7 @@ function generateUsers(numberOfTitles, callback) {
     const obj = {
       // user_gen_id: i,
       user_name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      list_name: `${faker.random.word()}`
     };
     generatedData.push(obj);
   }
@@ -118,7 +119,7 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
     const param = arguments[1];
     func(param, (data, funcName) => {
       const writer = csvWriter();
-      writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvPostgres/${funcName}${1}.csv`));
+      writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra/${funcName}${1}.csv`));
       var x = -1;
       write();
         function write() {
@@ -143,7 +144,7 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
     for (let i = 1; i <= numberOfFiles; i++) {
       func(numberOfData, (data, funcName) => {
         const writer = csvWriter();
-        writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvPostgres/${funcName}${i}.csv`));
+        writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra/${funcName}${i}.csv`));
         var x = -1;
         write();
           function write() {
@@ -169,45 +170,75 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
 }
 
 //createDataHelper(funcName, numberOfFiles, numberOfEntitiesPerFile [perForeignKeyRepeatTimes]);
-createDataHelper(generatePlace, 4, 2500000);  //10mil
-createDataHelper(generateUsers, 4, 2500000); //10mil
-createDataHelper(generateUserLists, 4, 2500000, 2); //20mil
+createDataHelper(generatePlace, 4, 5);
+createDataHelper(generateUsers, 4, 5);
+// createDataHelper(generateUserLists, 4, 2500000, 2);
 
 //createDataHelper(funcName, numberOfLikesPerList) - grabs info from already generated data
-createDataHelper(generateUserLikes, 3);//60mil
+// createDataHelper(generateUserLikes, 3);
 
 console.log(counters);
 //total 100mil
 
+// const faker = require('faker');
+// const fs = require('fs');
+// const csvWriter = require('csv-write-stream');
+// const writer = csvWriter();
 
-// function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeatTimes) {
-//   let created = 0;
-//   const total = numberOfFiles * numberOfData;
-//   if (arguments.length === 2) {
-//     const param = arguments[1];
-//     func(param, (data, funcName) => {
-//       const writer = csvWriter();
-//       writer.pipe(fs.createWriteStream(`./csvPostgresData/${funcName}${1}.csv`));
-//       for (let x = 0; x < data.length; x++) {
-//         writer.write(data[x]);
-//       }
-//       console.log(`${funcName}: created 1 file with ${data.length}/${data.length}`);
-//       writer.end();
-//       console.log('written to file');
-//     });
-//   } else {
-//     for (let i = 1; i <= numberOfFiles; i++) {
-//       func(numberOfData, (data, funcName) => {
-//         const writer = csvWriter();
-//         writer.pipe(fs.createWriteStream(`./csvPostgresData/${funcName}${i}.csv`));
-//         for (let x = 0; x < data.length; x++) {
-//           writer.write(data[x]);
-//         }
-//         created += numberOfData;
-//         console.log(`${funcName}: created ${i} files with ${created}/${total}`);
-//         writer.end();
-//       }, perForeignKeyRepeatTimes);
-//       console.log('written to file');
-//     }
+// const counters = {
+//   generatePlace: 0,
+//   generateUsers: 0,
+//   generateUserLists: 0,
+//   generateUserListsFk: 0,
+//   generateUserLikesFk: 0,
+//   index: 1
+// };
+
+// function generateUsers(numberOfRows, callback) {
+//   const name = 'generateUsers';
+//   const generatedData = [];
+
+//   for (let i = 1; i <= numberOfRows; i++) {
+//     const obj = {
+//       user_gen_id: i,
+//       user_name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+//     };
+//     generatedData.push(obj);
 //   }
+//   callback(generatedData);
+//   return generatedData;
 // }
+
+// const write = (writer, data) => {
+//   return new Promise((resolve) => {
+//     if (!writer.write(data)) {
+//       writer.once('drain', resolve)
+//     }
+//     else {
+//       resolve()
+//     }
+//   })
+//   .catch((err)=>{})
+// }
+
+// // usage
+// const run = async (data) => {
+//   writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra/test${counters.index}.csv`))
+//   const max = data.length;
+//   let current = 0
+//   while (current <= max) {
+//     await write(writer, data[current])
+//     current++
+//   }
+//   counters.index++;
+// }
+
+// const helperFunc = (func, numberOfFiles, numberOfRows) => {
+
+//   for (let i = 1; i <= numberOfFiles; i++) {
+//     func(numberOfRows, run)
+//   }
+
+// }
+
+// helperFunc(generateUsers, 2, 10);
