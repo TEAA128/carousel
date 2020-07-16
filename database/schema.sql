@@ -79,5 +79,23 @@ COPY user_lists(list_name,user_id_fk)
 FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUserLists4.csv' DELIMITER ',' CSV HEADER;
 ------------------------------
 -- import user_likes
+-- COPY user_likes(list_id,place_id)
+-- FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUserLikes1.csv' DELIMITER ',' CSV HEADER;
+
 COPY user_likes(list_id,place_id)
-FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generateUserLikes1.csv' DELIMITER ',' CSV HEADER;
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/csv-splitter-output/generateUserLikes1_1.csv' DELIMITER ',' CSV HEADER;
+
+COPY user_likes(list_id,place_id)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/csv-splitter-output/generateUserLikes1_2.csv' DELIMITER ',' CSV HEADER;
+
+COPY user_likes(list_id,place_id)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/csv-splitter-output/generateUserLikes1_3.csv' DELIMITER ',' CSV HEADER;
+
+COPY user_likes(list_id,place_id)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/csv-splitter-output/generateUserLikes1_4.csv' DELIMITER ',' CSV HEADER;
+
+COPY user_likes(list_id,place_id)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/csv-splitter-output/generateUserLikes1_5.csv' DELIMITER ',' CSV HEADER;
+
+COPY user_likes(list_id,place_id)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/csv-splitter-output/generateUserLikes1_6.csv' DELIMITER ',' CSV HEADER;

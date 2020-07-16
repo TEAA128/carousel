@@ -28,6 +28,7 @@ function generatePlace(numberOfTitles, callback) {
   for (let i = counters.generatePlace + 1; i <= (numberOfTitles + counters.generatePlace); i++) {
     const obj = {
       place_gen_id: i,
+      place_uuid: faker.random.uuid(),
       title: faker.lorem.sentence(),
       picture_url: faker.image.imageUrl(),
       zip_code: faker.address.zipCode(),
@@ -52,7 +53,7 @@ function generateUsers(numberOfTitles, callback) {
   const generatedData = [];
   for (let i = counters.generateUsers + 1; i <= (numberOfTitles + counters.generateUsers); i++) {
     const obj = {
-      // user_gen_id: i,
+      user_gen_id: i,
       user_name: `${faker.name.firstName()} ${faker.name.lastName()}`,
       list_name: `${faker.random.word()}`
     };
@@ -64,16 +65,19 @@ function generateUsers(numberOfTitles, callback) {
 }
 
 function generateUserLists(numberOfTitles, callback, perForeignKeyRepeatTimes = 1) {
-  const name = 'generateUserLists';
+  const name = 'generateUserListsAndLikes';
   const generatedData = [];
   let counter = counters.generateUserListsFk;
   for (let i = counters.generateUserLists + 1; i <= (numberOfTitles + counters.generateUserLists); i++) {
     let k = counter + 1;
     while (k <= perForeignKeyRepeatTimes + counter) {
       const obj = {
-        // list_gen_id: k,
+        user_id: i,
+        user_uuid: faker.random.uuid(),
+        user_name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        list_id: k,
         list_name: `${faker.random.word()}`,
-        user_id_fk: i,
+
       };
       generatedData.push(obj);
       k++;
@@ -172,7 +176,7 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
 //createDataHelper(funcName, numberOfFiles, numberOfEntitiesPerFile [perForeignKeyRepeatTimes]);
 createDataHelper(generatePlace, 4, 5);
 createDataHelper(generateUsers, 4, 5);
-// createDataHelper(generateUserLists, 4, 2500000, 2);
+createDataHelper(generateUserLists, 4, 5, 2);
 
 //createDataHelper(funcName, numberOfLikesPerList) - grabs info from already generated data
 // createDataHelper(generateUserLikes, 3);
