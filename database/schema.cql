@@ -51,7 +51,7 @@ CREATE TABLE likes_by_listid (
   like_id uuid,
   list_id int,
   place_id int,
-  PRIMARY KEY (list_id, place_id)
+  PRIMARY KEY ((like_id, list_id), place_id)
 ) WITH CLUSTERING ORDER BY (place_id ASC);
 
 /* import places */
