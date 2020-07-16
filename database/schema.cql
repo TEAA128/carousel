@@ -27,60 +27,86 @@ CREATE TABLE user_by_userid (
   user_id int,
   user_uuid uuid,
   user_name text,
-  list_id uuid,
+  list_id int,
+  list_uuid uuid,
   list_name text,
-  like_id uuid,
-  place_id uuid,
   PRIMARY KEY (user_id, list_id)
 ) WITH CLUSTERING ORDER BY (list_id ASC);
-
 
 /* for PATCH req and DELETE req (api always sends user_id+list_id, cause user HAS like lists) */
 DROP TABLE IF EXISTS user_by_userid_and_listid;
 CREATE TABLE user_by_userid_and_listid (
-  user_id uuid,
+  user_id int,
+  user_uuid uuid,
   user_name text,
-  list_id uuid,
+  list_id int,
+  list_uuid uuid,
   list_name text,
+  PRIMARY KEY ((user_id, list_id), list_name)
+) WITH CLUSTERING ORDER BY (list_name ASC);
+
+
+DROP TABLE IF EXISTS likes_by_listid;
+CREATE TABLE likes_by_listid (
   like_id uuid,
-  place_id uuid,
-  PRIMARY KEY ((user_id, list_id), place_id)
+  list_id int,
+  place_id int,
+  PRIMARY KEY (list_id, place_id)
 ) WITH CLUSTERING ORDER BY (place_id ASC);
 
-DROP TABLE IF EXISTS test;
-CREATE TABLE test (
-  test_id uuid,
-  test_id2 timestamp,
-  PRIMARY KEY (test_id, test_id2)
-) WITH CLUSTERING ORDER BY (test_id2 ASC);
-
-
-INSERT INTO test(test_id, test_id2) VALUES(uuid(),toTimestamp(now()));
-
-/*
-COPY places(title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
-FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generatePlace1.csv' DELIMITER ',' CSV HEADER;
-*/
-
 /* import places */
-COPY place_by_zipCode(place_id,place_uuid,title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host, super_host,price,link)
+COPY place_by_zipCode(place_id,place_uuid,title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
 FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generatePlace1.csv'
 with header=true and delimiter =',';
 
-COPY place_by_zipCode(place_id,place_uuid,title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host, super_host,price,link)
+COPY place_by_zipCode(place_id,place_uuid,title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
 FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generatePlace2.csv'
 with header=true and delimiter =',';
 
-COPY place_by_zipCode(place_id,place_uuid,title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host, super_host,price,link)
+COPY place_by_zipCode(place_id,place_uuid,title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
 FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generatePlace3.csv'
 with header=true and delimiter =',';
 
-COPY place_by_zipCode(place_id,place_uuid,title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host, super_host,price,link)
+COPY place_by_zipCode(place_id,place_uuid,title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
 FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generatePlace4.csv'
 with header=true and delimiter =',';
 
-/* import users_by_userid
-COPY user_by_userid(user_name,list_name)
-FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generateUsers1.csv'
+
+/* import users_by_userid */
+COPY user_by_userid(user_id,user_uuid,user_name,list_id,list_uuid,list_name)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generateUserAndList1.csv'
 with header=true and delimiter =',';
-*/
+
+COPY user_by_userid(user_id,user_uuid,user_name,list_id,list_uuid,list_name)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generateUserAndList2.csv'
+with header=true and delimiter =',';
+
+COPY user_by_userid(user_id,user_uuid,user_name,list_id,list_uuid,list_name)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generateUserAndList3.csv'
+with header=true and delimiter =',';
+
+COPY user_by_userid(user_id,user_uuid,user_name,list_id,list_uuid,list_name)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generateUserAndList4.csv'
+with header=true and delimiter =',';
+
+/* import user_by_userid_and_listid */
+COPY user_by_userid_and_listid(user_id,user_uuid,user_name,list_id,list_uuid,list_name)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generateUserAndList1.csv'
+with header=true and delimiter =',';
+
+COPY user_by_userid_and_listid(user_id,user_uuid,user_name,list_id,list_uuid,list_name)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generateUserAndList2.csv'
+with header=true and delimiter =',';
+
+COPY user_by_userid_and_listid(user_id,user_uuid,user_name,list_id,list_uuid,list_name)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generateUserAndList3.csv'
+with header=true and delimiter =',';
+
+COPY user_by_userid_and_listid(user_id,user_uuid,user_name,list_id,list_uuid,list_name)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generateUserAndList4.csv'
+with header=true and delimiter =',';
+
+/* import likes_by_listid */
+COPY likes_by_listid(like_id,list_id,place_id)
+FROM '/Users/ozzy_chel/Projects/sdc/data/csvCassandra/generateUserLikes1.csv'
+with header=true and delimiter =',';
