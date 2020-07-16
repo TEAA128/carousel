@@ -28,7 +28,7 @@ function generatePlace(numberOfTitles, callback) {
   for (let i = counters.generatePlace + 1; i <= (numberOfTitles + counters.generatePlace); i++) {
     const obj = {
       place_gen_id: i,
-      place_uuid: faker.random.uuid(),
+      // place_uuid: faker.random.uuid(),
       title: faker.lorem.sentence(),
       picture_url: faker.image.imageUrl(),
       zip_code: faker.address.zipCode(),
@@ -74,10 +74,10 @@ function generateUserLists(numberOfTitles, callback, perForeignKeyRepeatTimes = 
     while (k <= perForeignKeyRepeatTimes + counter) {
       const obj = {
         user_id: i,
-        user_uuid: faker.random.uuid(),
+        // user_uuid: faker.random.uuid(),
         user_name: name,
         list_id: k,
-        list_uuid: faker.random.uuid(),
+        // list_uuid: faker.random.uuid(),
         list_name: `${faker.random.word()}`,
       };
 
@@ -104,7 +104,7 @@ function generateUserLikes(numberOfLikesPerList, callback) {
     for (let k = counter + 1; k <= counter + mult; k++) {
       for (let x = counter2 + 1; x <= counter2 + numberOfLikesPerList; x++) {
         let obj = {
-          like_uuid: faker.random.uuid(),
+          // like_uuid: faker.random.uuid(),
           list_id: k,
           place_id: i
         }
@@ -126,7 +126,7 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
     const param = arguments[1];
     func(param, (data, funcName) => {
       const writer = csvWriter();
-      writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra/${funcName}${1}.csv`));
+      writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra2/${funcName}${1}.csv`));
       var x = -1;
       write();
         function write() {
@@ -151,7 +151,7 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
     for (let i = 1; i <= numberOfFiles; i++) {
       func(numberOfData, (data, funcName) => {
         const writer = csvWriter();
-        writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra/${funcName}${i}.csv`));
+        writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra2/${funcName}${i}.csv`));
         var x = -1;
         write();
           function write() {
@@ -165,6 +165,9 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
                 writer.end()
               } else {
                 ok = writer.write(data[x]);
+                if(x === numberOfData-1){
+                  console.log('working')
+                }
               }
             } while (x < data.length && ok);
             if (x < data.length) {
@@ -177,12 +180,12 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
 }
 
 //createDataHelper(funcName, numberOfFiles, numberOfEntitiesPerFile [perForeignKeyRepeatTimes]);
-createDataHelper(generatePlace, 4, 5);
-createDataHelper(generateUsers, 4, 5);
-createDataHelper(generateUserLists, 4, 5, 2);
+createDataHelper(generatePlace, 4, 2500000);//10mil
+createDataHelper(generateUsers, 4, 2500000);//10mil
+createDataHelper(generateUserLists, 4, 2500000, 2);//20 mil
 
 //createDataHelper(funcName, numberOfLikesPerList) - grabs info from already generated data
-createDataHelper(generateUserLikes, 3);
+createDataHelper(generateUserLikes, 3); //60mil
 
 console.log(counters);
 //total 100mil
