@@ -52,7 +52,6 @@ CREATE TABLE user_by_userid_and_listid (
   PRIMARY KEY ((user_id, list_id), list_name)
 ) WITH CLUSTERING ORDER BY (list_name ASC);
 
-
 DROP TABLE IF EXISTS likes_by_listid;
 CREATE TABLE likes_by_listid (
   list_id int,

@@ -18,12 +18,17 @@ CREATE DATABASE carousel;
     price INTEGER NOT NULL,
     link TEXT NOT NULL
   );
+  CREATE INDEX CONCURRENTLY zipcode_idx ON places (zip_code);
+  CREATE INDEX CONCURRENTLY places_beds_idx ON places (beds_number);
+  CREATE INDEX CONCURRENTLY places_price_idx ON places (price);
 
   DROP TABLE IF EXISTS users;
   CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     user_name VARCHAR(50) NOT NULL
   );
+  CREATE INDEX CONCURRENTLY userid_idx ON users (user_id);
+  CREATE INDEX CONCURRENTLY user_name_idx ON users (user_name);
 
   DROP TABLE IF EXISTS user_lists;
   CREATE TABLE user_lists (
@@ -31,6 +36,7 @@ CREATE DATABASE carousel;
     list_name TEXT NOT NULL,
     user_id_fk INTEGER REFERENCES users(user_id)
   );
+  CREATE INDEX CONCURRENTLY user_id_fk_idx ON user_lists (user_id_fk);
 
   DROP TABLE IF EXISTS user_likes;
   CREATE TABLE user_likes (
@@ -38,8 +44,8 @@ CREATE DATABASE carousel;
     list_id INTEGER REFERENCES user_lists(list_id),
     place_id INTEGER REFERENCES places(place_id)
   );
+  CREATE INDEX CONCURRENTLY likes_listid_idx ON user_likes (list_id);
 
--- import places
 COPY places(title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
 FROM '/Users/ozzy_chel/Projects/sdc/data/csvPostgres/generatePlace1.csv' DELIMITER ',' CSV HEADER;
 
