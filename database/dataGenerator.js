@@ -7,7 +7,7 @@ const counters = {
   generateUsers: 0,
   generateUserLists: 0,
   generateUserListsFk: 0,
-  // generateUserLikes: 0,
+  pictureCount: 0,
   generateUserLikesFk: 0
 };
 
@@ -26,10 +26,13 @@ function generatePlace(numberOfTitles, callback) {
   };
 
   for (let i = counters.generatePlace + 1; i <= (numberOfTitles + counters.generatePlace); i++) {
+    if (counters.pictureCount >= 1000) {
+      counters.pictureCount = 0;
+    }
     const obj = {
       // place_gen_id: i,
       title: faker.lorem.sentence(),
-      picture_url: faker.image.imageUrl(),
+      picture_url: `https://sdc128images.s3-us-west-1.amazonaws.com/sdc_images/image${counters.pictureCount}.jpg`,
       zip_code: faker.address.zipCode(),
       type_of_room: randomTypeOfRoom(),
       beds_number: randomNumber(1, 20),
@@ -40,8 +43,10 @@ function generatePlace(numberOfTitles, callback) {
       price: randomNumber(50, 500),
       link: faker.internet.url(),
     };
+    counters.pictureCount++;
     generatedData.push(obj);
   }
+
   callback(generatedData, name);
   counters.generatePlace += numberOfTitles;
   return generatedData;
@@ -179,35 +184,3 @@ createDataHelper(generateUserLikes, 3);//60mil
 console.log(counters);
 //total 100mil
 
-
-// function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeatTimes) {
-//   let created = 0;
-//   const total = numberOfFiles * numberOfData;
-//   if (arguments.length === 2) {
-//     const param = arguments[1];
-//     func(param, (data, funcName) => {
-//       const writer = csvWriter();
-//       writer.pipe(fs.createWriteStream(`./csvPostgresData/${funcName}${1}.csv`));
-//       for (let x = 0; x < data.length; x++) {
-//         writer.write(data[x]);
-//       }
-//       console.log(`${funcName}: created 1 file with ${data.length}/${data.length}`);
-//       writer.end();
-//       console.log('written to file');
-//     });
-//   } else {
-//     for (let i = 1; i <= numberOfFiles; i++) {
-//       func(numberOfData, (data, funcName) => {
-//         const writer = csvWriter();
-//         writer.pipe(fs.createWriteStream(`./csvPostgresData/${funcName}${i}.csv`));
-//         for (let x = 0; x < data.length; x++) {
-//           writer.write(data[x]);
-//         }
-//         created += numberOfData;
-//         console.log(`${funcName}: created ${i} files with ${created}/${total}`);
-//         writer.end();
-//       }, perForeignKeyRepeatTimes);
-//       console.log('written to file');
-//     }
-//   }
-// }
