@@ -30,7 +30,7 @@ function generatePlace(numberOfTitles, callback) {
       counters.pictureCount = 0;
     }
     const obj = {
-      // place_gen_id: i,
+      place_id: i,
       title: faker.lorem.sentence(),
       picture_url: `https://sdc128images.s3-us-west-1.amazonaws.com/sdc_images/image${counters.pictureCount}.jpg`,
       zip_code: faker.address.zipCode(),
@@ -46,7 +46,6 @@ function generatePlace(numberOfTitles, callback) {
     counters.pictureCount++;
     generatedData.push(obj);
   }
-
   callback(generatedData, name);
   counters.generatePlace += numberOfTitles;
   return generatedData;
@@ -57,8 +56,9 @@ function generateUsers(numberOfTitles, callback) {
   const generatedData = [];
   for (let i = counters.generateUsers + 1; i <= (numberOfTitles + counters.generateUsers); i++) {
     const obj = {
-      // user_gen_id: i,
+      user_gen_id: i,
       user_name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      list_name: `${faker.random.word()}`
     };
     generatedData.push(obj);
   }
@@ -68,16 +68,18 @@ function generateUsers(numberOfTitles, callback) {
 }
 
 function generateUserLists(numberOfTitles, callback, perForeignKeyRepeatTimes = 1) {
-  const name = 'generateUserLists';
+  const name = 'generateUserAndList';
   const generatedData = [];
   let counter = counters.generateUserListsFk;
   for (let i = counters.generateUserLists + 1; i <= (numberOfTitles + counters.generateUserLists); i++) {
     let k = counter + 1;
+    let name = `${faker.name.firstName()} ${faker.name.lastName()}`;
     while (k <= perForeignKeyRepeatTimes + counter) {
       const obj = {
-        // list_gen_id: k,
+        user_id: i,
+        user_name: name,
+        list_id: k,
         list_name: `${faker.random.word()}`,
-        user_id_fk: i,
       };
       generatedData.push(obj);
       k++;
@@ -123,7 +125,7 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
     const param = arguments[1];
     func(param, (data, funcName) => {
       const writer = csvWriter();
-      writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvPostgres/${funcName}${1}.csv`));
+      writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra/${funcName}${1}.csv`));
       var x = -1;
       write();
         function write() {
@@ -148,7 +150,7 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
     for (let i = 1; i <= numberOfFiles; i++) {
       func(numberOfData, (data, funcName) => {
         const writer = csvWriter();
-        writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvPostgres/${funcName}${i}.csv`));
+        writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra/${funcName}${i}.csv`));
         var x = -1;
         write();
           function write() {
@@ -162,6 +164,9 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
                 writer.end()
               } else {
                 ok = writer.write(data[x]);
+                if(x === numberOfData-1){
+                  console.log('working')
+                }
               }
             } while (x < data.length && ok);
             if (x < data.length) {
@@ -174,13 +179,12 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
 }
 
 //createDataHelper(funcName, numberOfFiles, numberOfEntitiesPerFile [perForeignKeyRepeatTimes]);
-createDataHelper(generatePlace, 4, 2500000);  //10mil
-createDataHelper(generateUsers, 4, 2500000); //10mil
-createDataHelper(generateUserLists, 4, 2500000, 2); //20mil
+createDataHelper(generatePlace, 4, 2500000);//10mil
+createDataHelper(generateUsers, 4, 2500000);//10mil
+createDataHelper(generateUserLists, 4, 2500000, 2);//20 mil
 
 //createDataHelper(funcName, numberOfLikesPerList) - grabs info from already generated data
-createDataHelper(generateUserLikes, 3);//60mil
+createDataHelper(generateUserLikes, 3); //60mil
 
 console.log(counters);
 //total 100mil
-
