@@ -7,7 +7,7 @@ const counters = {
   generateUsers: 0,
   generateUserLists: 0,
   generateUserListsFk: 0,
-  // generateUserLikes: 0,
+  pictureCount: 0,
   generateUserLikesFk: 0
 };
 
@@ -26,11 +26,13 @@ function generatePlace(numberOfTitles, callback) {
   };
 
   for (let i = counters.generatePlace + 1; i <= (numberOfTitles + counters.generatePlace); i++) {
+    if (counters.pictureCount >= 1000) {
+      counters.pictureCount = 0;
+    }
     const obj = {
-      place_gen_id: i,
-      // place_uuid: faker.random.uuid(),
+      place_id: i,
       title: faker.lorem.sentence(),
-      picture_url: faker.image.imageUrl(),
+      picture_url: `https://sdc128images.s3-us-west-1.amazonaws.com/sdc_images/image${counters.pictureCount}.jpg`,
       zip_code: faker.address.zipCode(),
       type_of_room: randomTypeOfRoom(),
       beds_number: randomNumber(1, 20),
@@ -41,6 +43,7 @@ function generatePlace(numberOfTitles, callback) {
       price: randomNumber(50, 500),
       link: faker.internet.url(),
     };
+    counters.pictureCount++;
     generatedData.push(obj);
   }
   callback(generatedData, name);
@@ -74,13 +77,10 @@ function generateUserLists(numberOfTitles, callback, perForeignKeyRepeatTimes = 
     while (k <= perForeignKeyRepeatTimes + counter) {
       const obj = {
         user_id: i,
-        // user_uuid: faker.random.uuid(),
         user_name: name,
         list_id: k,
-        // list_uuid: faker.random.uuid(),
         list_name: `${faker.random.word()}`,
       };
-
       generatedData.push(obj);
       k++;
     }
@@ -104,7 +104,6 @@ function generateUserLikes(numberOfLikesPerList, callback) {
     for (let k = counter + 1; k <= counter + mult; k++) {
       for (let x = counter2 + 1; x <= counter2 + numberOfLikesPerList; x++) {
         let obj = {
-          // like_uuid: faker.random.uuid(),
           list_id: k,
           place_id: i
         }
@@ -126,7 +125,7 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
     const param = arguments[1];
     func(param, (data, funcName) => {
       const writer = csvWriter();
-      writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra2/${funcName}${1}.csv`));
+      writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra/${funcName}${1}.csv`));
       var x = -1;
       write();
         function write() {
@@ -151,7 +150,7 @@ function createDataHelper(func, numberOfFiles, numberOfData, perForeignKeyRepeat
     for (let i = 1; i <= numberOfFiles; i++) {
       func(numberOfData, (data, funcName) => {
         const writer = csvWriter();
-        writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra2/${funcName}${i}.csv`));
+        writer.pipe(fs.createWriteStream(`/Users/ozzy_chel/Projects/sdc/data/csvCassandra/${funcName}${i}.csv`));
         var x = -1;
         write();
           function write() {
