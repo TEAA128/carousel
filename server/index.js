@@ -5,26 +5,25 @@ const port = 3003;
 const parser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
-const UserController = require('./Controller/user.js');
-const PlaceController = require('./Controller/place.js');
+const Controllers = require('./controllers');
 
 app.use(parser.json());
 app.use(morgan('dev'));
 app.use(cors());
 
-app.use('/carousel', express.static(path.join(__dirname, '..', 'client', 'dist')));
-// setup proxy
-app.set('trust proxy', (ip) => {
-  if (ip === 'localhost:3000') return true;
-  return false;
+app.use(express.static('../client/dist'));
+
+//GET requests
+app.get('/api/places', (req, res) => {
+  Controllers.getPlaces(req,res);
 });
 
-// Places API Calls:
-app.get('/api/places', PlaceController.get);
+app.get('/api/users/:userId', (req, res) => {
+  Controllers.getUser(req, res);
+})
 
-// User - API Calls:
-app.get('/api/users', UserController.get);
-app.post('/api/users', UserController.post);
-app.patch('/api/users/:placeId', UserController.update);
+app.get('/api/likes/:listId', (req, res) => {
+  Controllers.getLikes(req, res);
+})
 
 app.listen(port, () => console.log(`App is listening at http://localhost:${port}`));
