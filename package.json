@@ -7,7 +7,7 @@
     "react-dev": "webpack -d --watch",
     "build": "webpack --mode=production",
     "start": "nodemon server/index.js",
-    "db-seed": "node database/seed.js",
+    "db-seed": "node originalDB/seed.js",
     "test": "jest",
     "lint": "eslint database server --fix"
   },
@@ -25,6 +25,7 @@
     "axios": "^0.19.2",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
+    "cluster": "^0.7.7",
     "cors": "^2.8.5",
     "csv-splitter": "^1.1.0",
     "csv-write-stream": "^2.0.0",

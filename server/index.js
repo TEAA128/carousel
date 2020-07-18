@@ -6,12 +6,21 @@ const parser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const Controllers = require('./controllers');
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
+
+
+
+
+
+
+
 
 app.use(parser.json());
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(cors());
 
-app.use(express.static('../client/dist'));
+app.use('/', express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 //GET requests
 app.get('/api/places', (req, res) => {
@@ -27,3 +36,4 @@ app.get('/api/likes/:listId', (req, res) => {
 })
 
 app.listen(port, () => console.log(`App is listening at http://localhost:${port}`));
+
