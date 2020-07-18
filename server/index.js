@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const app = express();
 const port = 3003;
 const parser = require('body-parser');
 const morgan = require('morgan');
@@ -9,31 +8,42 @@ const Controllers = require('./controllers');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 
+if (cluster.isMaster) {
+  for (var i = 0; i < numCPUs; i++) {
+      cluster.fork();
+  }
+} else {
+  const app = express();
+
+  app.use(parser.json());
+  // app.use(morgan('dev'));
+  app.use(cors());
+
+  app.use('/', express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 
+  app.get('/api/places', (req, res) => {
+    Controllers.getPlaces(req,res);
+  });
 
+  app.get('/api/users/:userId', (req, res) => {
+    Controllers.getUser(req, res);
+  })
 
+  app.get('/api/likes/:listId', (req, res) => {
+    Controllers.getLikes(req, res);
+  })
 
+  app.listen(port, () => console.log(`App is listening at http://localhost:${port}`));
+}
 
-
-app.use(parser.json());
-// app.use(morgan('dev'));
-app.use(cors());
-
-app.use('/', express.static(path.join(__dirname, '..', 'client', 'dist')));
-
-//GET requests
-app.get('/api/places', (req, res) => {
-  Controllers.getPlaces(req,res);
+cluster.on('exit', function(worker, code, signal) {
+  console.log('Worker %d died with code/signal %s. Restarting worker...', worker.process.pid, signal || code);
+  cluster.fork();
 });
 
-app.get('/api/users/:userId', (req, res) => {
-  Controllers.getUser(req, res);
-})
 
-app.get('/api/likes/:listId', (req, res) => {
-  Controllers.getLikes(req, res);
-})
 
-app.listen(port, () => console.log(`App is listening at http://localhost:${port}`));
+
+
 

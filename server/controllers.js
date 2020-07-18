@@ -19,7 +19,6 @@ const getUser = (req, res) => {
       res.status(400).send();
     }
     if (data) {
-      // console.log('success');
       res.status(200).send(data);
     }
   })
