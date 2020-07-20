@@ -1,30 +1,50 @@
+require('newrelic');
 const express = require('express');
 const path = require('path');
-const app = express();
 const port = 3003;
 const parser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
-const UserController = require('./Controller/user.js');
-const PlaceController = require('./Controller/place.js');
+const Controllers = require('./controllers');
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
 
-app.use(parser.json());
-app.use(morgan('dev'));
-app.use(cors());
+if (cluster.isMaster) {
+  for (var i = 0; i < numCPUs; i++) {
+      cluster.fork();
+  }
+} else {
+  const app = express();
 
-app.use('/carousel', express.static(path.join(__dirname, '..', 'client', 'dist')));
-// setup proxy
-app.set('trust proxy', (ip) => {
-  if (ip === 'localhost:3000') return true;
-  return false;
+  app.use(parser.json());
+  // app.use(morgan('dev'));
+  app.use(cors());
+
+  app.use('/', express.static(path.join(__dirname, '..', 'client', 'dist')));
+
+
+  app.get('/api/places', (req, res) => {
+    Controllers.getPlaces(req,res);
+  });
+
+  app.get('/api/users/:userId', (req, res) => {
+    Controllers.getUser(req, res);
+  })
+
+  app.get('/api/likes/:listId', (req, res) => {
+    Controllers.getLikes(req, res);
+  })
+
+  app.listen(port, () => console.log(`App is listening at http://localhost:${port}`));
+}
+
+cluster.on('exit', function(worker, code, signal) {
+  console.log('Worker %d died with code/signal %s. Restarting worker...', worker.process.pid, signal || code);
+  cluster.fork();
 });
 
-// Places API Calls:
-app.get('/api/places', PlaceController.get);
 
-// User - API Calls:
-app.get('/api/users', UserController.get);
-app.post('/api/users', UserController.post);
-app.patch('/api/users/:placeId', UserController.update);
 
-app.listen(port, () => console.log(`App is listening at http://localhost:${port}`));
+
+
+

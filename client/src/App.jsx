@@ -21,7 +21,8 @@ class App extends React.Component {
       likelistinput: '',
       clickedplace: {},
       enablesubmitbutton: false,
-      modelOpen: false
+      modelOpen: false,
+      currentZipCode: '94116'
     };
 
     this.createNewList = this.createNewList.bind(this);
@@ -217,10 +218,18 @@ class App extends React.Component {
 
 
   componentDidMount(){
-    axios.get('http://localhost:3003/api/places')
+    axios.get('http://localhost:3003/api/places', {
+      params: {
+      zipCode: this.state.currentZipCode,
+      beds_number: 15,
+      price: 300
+      }
+    })
     .then((res)=>{
       //suppose to do some filtring here?
-      const totalplaces = [...res.data].slice(0,12);
+
+      console.log(res);
+      const totalplaces = [...res.data.fields].slice(0,12);
       const fourplaces = [...totalplaces].slice(0,4);
       this.setState({
         places: totalplaces,
@@ -236,9 +245,10 @@ class App extends React.Component {
         user: currentUser
       })
     })
+    console.log('mounted')
   }
 
-  render() {
+  render () {
     const {error, isLoaded, places} = this.state;
     if(error) {
       return <div>Error: {error.message}</div>
