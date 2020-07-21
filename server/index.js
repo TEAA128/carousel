@@ -28,11 +28,19 @@ if (cluster.isMaster) {
   });
 
   app.get('/api/users/:userId', (req, res) => {
-    Controllers.getUser(req, res);
+    Controllers.getUserLists(req, res);
   })
 
   app.get('/api/likes/:listId', (req, res) => {
     Controllers.getLikes(req, res);
+  })
+
+  app.post('/api/users/:userId', (req, res) => {
+    Controllers.postNewList(req, res);
+  })
+
+  app.patch('/api/users/:userId', (req,res) => {
+    Controllers.toggleLike(req,res)
   })
 
   app.listen(port, () => console.log(`App is listening at http://localhost:${port}`));

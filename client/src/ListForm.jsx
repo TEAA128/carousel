@@ -21,7 +21,7 @@ const ListForm = ({listButtonRender,createNewList, cancelCreateListButton, submi
               <div className={styles.likelistformbuttoncanceldiv}>
                 <input className={styles.likelistformbuttoncancel} type="button" name="cancel" value="Cancel" onClick={()=>cancelCreateListButton()}></input>
               </div>
-              <input className={styles.likelistformbuttonsubmit} disable={!enablesubmitbutton} type="submit" name="submit" value="Create" ></input>
+              <input className={styles.likelistformbuttonsubmit} disable={!enablesubmitbutton ? 'false' : 'true'} type="submit" name="submit" value="Create" ></input>
             </div>
           </label>
         </form>
