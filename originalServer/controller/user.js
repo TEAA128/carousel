@@ -1,4 +1,4 @@
-const User = require('../../database/User.js');
+const User = require('../../originalDB/User.js');
 
 module.exports = {
   get: (req, res) => {
