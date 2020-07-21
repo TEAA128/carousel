@@ -48,15 +48,9 @@ const postNewList = (req, res) => {
   })
 }
 
-const toggleLike = (req, res) => {
-  console.log(req.body)
-}
-
-
 module.exports = {
   getPlaces,
   getUserLists,
   getLikes,
-  postNewList,
-  toggleLike
+  postNewList
 }

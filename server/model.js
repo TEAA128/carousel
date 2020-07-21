@@ -1,14 +1,12 @@
 const db = require('../database/index.js');
 
 const getPlacesByZipCode = (req, res, callback) => {
-  // console.log('REQ.QUERY',req.query)
   const zip = req.query.zipCode;
   const bedsMin = Math.floor(parseInt(req.query.beds_number) * 0.6);
   const bedsMax = Math.ceil(parseInt(req.query.beds_number) * 1.4);
   const priceMin = Math.floor(parseInt(req.query.price) * 0.6);
   const priceMax = Math.ceil(parseInt(req.query.price) * 1.4);
   const query = `SELECT * FROM places WHERE zip_code = '${zip}' AND beds_number > ${bedsMin} AND beds_number < ${bedsMax} AND price > ${priceMin} AND price < ${priceMax}`;
-  // console.log(query)
   db.pool.query(query)
     .then((result) => {
       return convertPlacesResponce(result);
@@ -22,10 +20,8 @@ const getPlacesByZipCode = (req, res, callback) => {
 };
 
 const getUserListsById = (req, res, callback) => {
-  // console.log(req.params)
   const userId = req.params.userId;
-  // const query = `SELECT list_id,list_name FROM user_lists WHERE user_id_fk = ${userId}`;
-  const query = `SELECT * FROM users INNER JOIN user_lists ON users.user_id = user_lists.user_id_fk WHERE user_id_fk = ${userId}`
+  const query = `SELECT * FROM user_likes INNER JOIN user_lists ON user_likes.list_id = user_lists.list_id INNER JOIN users ON user_lists.user_id_fk = users.user_id WHERE user_id_fk = ${userId}`;
   db.pool.query(query)
     .then((result) => {
       return convertUserListsResponce(result);
@@ -39,6 +35,7 @@ const getUserListsById = (req, res, callback) => {
 }
 
 const createNewList = (req, res, callback) => {
+  console.log('BODY', req.body)
   const query = `WITH ins1 AS (INSERT INTO user_lists(list_name, user_id_fk) VALUES('${req.body.list_name}',${req.body.user_id}) RETURNING list_id) INSERT INTO user_likes(list_id, place_id) VALUES((SELECT list_id FROM ins1), ${req.body.place_id})`;
   db.pool.query(query, callback);
 }
@@ -81,7 +78,7 @@ const convertUserListsResponce = (array) => {
   }
   for (let i = 0; i < inputArray.length; i++) {
     let like = {
-      name: 'place',
+      name: inputArray[i].place_id,
       list: inputArray[i].list_name,
       like: true
     }

@@ -22,7 +22,7 @@ class App extends React.Component {
       clickedplace: {},
       enablesubmitbutton: false,
       modelOpen: false,
-      currentUser: 2002,
+      currentUser: 1000000,
       currentZip: '94116',
       currentBeds: '15',
       currentPrice: '300'
@@ -148,7 +148,7 @@ class App extends React.Component {
   listLikeToggle(e, singleList){
     if(singleList._id !== ''){
       //patch request
-      let placeId = singleList._id;
+      let placeId = singleList.name;
       const obj = {
             like: singleList.like === true ? false: true,
             place_id: placeId
@@ -175,8 +175,9 @@ class App extends React.Component {
       let obj = {
         user_id: this.state.user._id,
         place_id: this.state.clickedplace._id,
-        list_name: this.state.likelistinput,
+        list_name: this.state.likelistinput || 'default',
       }
+      console.log('ELSE IF OBJ', obj)
       axios.post(`/api/users/${this.state.currentUser}`, obj)
       .then((res)=>{
         console.log(res.status);

@@ -39,9 +39,9 @@ if (cluster.isMaster) {
     Controllers.postNewList(req, res);
   })
 
-  app.patch('/api/users/:userId', (req,res) => {
-    Controllers.toggleLike(req,res)
-  })
+  // app.patch('/api/users/:userId', (req,res) => {
+  //   Controllers.toggleLike(req, res)
+  // })
 
   app.listen(port, () => console.log(`App is listening at http://localhost:${port}`));
 }
