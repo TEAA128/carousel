@@ -1,4 +1,4 @@
-const Place = require('../../database/Place.js');
+const Place = require('../../originalDB/Place.js');
 
 module.exports = {
   get: (req, res) => {

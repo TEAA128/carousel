@@ -12,8 +12,8 @@ const getPlaces = (req, res) => {
   })
 }
 
-const getUser = (req, res) => {
-  Model.getUserById (req, res, (err, data) => {
+const getUserLists = (req, res) => {
+  Model.getUserListsById (req, res, (err, data) => {
     if (err) {
       console.log('failed');
       res.status(400).send();
@@ -35,32 +35,22 @@ const getLikes = (req, res) => {
   })
 }
 
-
-// const convertPlacesResponce = (array, callback) => {
-//   var newArray = [];
-//   console.log(array)
-//   console.log('WORKS')
-//   // for (let i = 0; i < array.length; i++) {
-//   //   let obj = {
-//   //     picture: array[i].picture_url,
-//   //     type: array[i].type_of_room,
-//   //     bed: array[i].beds_number,
-//   //     rating: array[i].rating,
-//   //     totalReview: array[i].total_review,
-//   //     hostplus: array[i].plus_host,
-//   //     superhost: array[i].super_host,
-//   //     title: array[i].title,
-//   //     price: array[i].price,
-//   //     src: array[i].link
-//   //   }
-//   //   newArray.push(obj)
-//   // }
-//   console.log(newArray)
-//   callback(newArray);
-// }
+const postNewList = (req, res) => {
+  Model.createNewList (req, res, (err, data) => {
+    if (err) {
+      console.log('failed', err)
+      res.status(400).send();
+    }
+    if (data) {
+      console.log('success')
+      res.status(201).send();
+    }
+  })
+}
 
 module.exports = {
   getPlaces,
-  getUser,
-  getLikes
+  getUserLists,
+  getLikes,
+  postNewList
 }

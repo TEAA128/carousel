@@ -22,7 +22,10 @@ class App extends React.Component {
       clickedplace: {},
       enablesubmitbutton: false,
       modelOpen: false,
-      currentZipCode: '94116'
+      currentUser: 1000000,
+      currentZip: '94116',
+      currentBeds: '15',
+      currentPrice: '300'
     };
 
     this.createNewList = this.createNewList.bind(this);
@@ -40,6 +43,31 @@ class App extends React.Component {
     this.userIndex = 0;
   }
 
+  componentDidMount(){
+    axios.get('/api/places', {
+      params: {
+        zipCode: this.state.currentZip,
+        beds_number: this.state.currentBeds,
+        price: this.state.currentPrice
+      }
+    })
+    .then((res)=>{
+      const totalplaces = [...res.data].slice(0,12);
+      const fourplaces = [...totalplaces].slice(0,4);
+      this.setState({
+        places: totalplaces,
+        totalplaces: totalplaces
+      })
+    })
+    .then( () => axios.get(`/api/users/${this.state.currentUser}`))
+    .then((res) => {
+      const currentUser = res.data[this.userIndex];
+      this.setState({
+        isLoaded: true,
+        user: currentUser
+      })
+    })
+  }
 
 
   //heart clicked
@@ -90,13 +118,11 @@ class App extends React.Component {
 
   submitCreateListbutton(e){
     let obj = {
-      "_id": this.state.user._id,
-      "likeplace": this.state.clickedplace._id,
-      "list": this.state.likelistinput,
-      "like": true
+      user_id: this.state.user._id,
+      place_id: this.state.clickedplace._id,
+      list_name: this.state.likelistinput,
     }
-
-    axios.post(this.serverUserPost,obj)
+    axios.post(`/api/users/${this.state.currentUser}`, obj)
     .then((res)=>{
       this.setState({
         likelistinput: '',
@@ -106,7 +132,7 @@ class App extends React.Component {
     .catch((e)=>{
       console.log(e);
     })
-    .then( ()=> axios.get('http://localhost:3003/api/users'))
+    .then( () => axios.get(`/api/users/${this.state.currentUser}`))
     .then((res) => {
       const currentUser = res.data[this.userIndex];
       this.setState({
@@ -122,17 +148,19 @@ class App extends React.Component {
   listLikeToggle(e, singleList){
     if(singleList._id !== ''){
       //patch request
-      let placeId = singleList._id;
+      let placeId = singleList.name;
       const obj = {
-            like: singleList.like === true ? false: true
+            like: singleList.like === true ? false: true,
+            place_id: placeId
       }
-      axios.patch(`http://localhost:3003/api/users/${placeId}`, obj)
+      console.log('OBJ',obj)
+      axios.patch(`/api/users/${this.state.currentUser}`, obj)
       .then((res)=>{
         console.log(res.status);
       })    .catch((e)=>{
         console.log(e);
       })
-      .then( ()=> axios.get('http://localhost:3003/api/users'))
+      .then( () => axios.get(`/api/users/${this.state.currentUser}`))
       .then((res) => {
         const currentUser = res.data[this.userIndex];
         this.setState({
@@ -145,18 +173,19 @@ class App extends React.Component {
       e.preventDefault();
     }else if(singleList._id === ''){
       let obj = {
-        "_id": this.state.user._id,
-        "likeplace": this.state.clickedplace._id,
-        "list": singleList.list,
-        "like": true
+        user_id: this.state.user._id,
+        place_id: this.state.clickedplace._id,
+        list_name: this.state.likelistinput || 'default',
       }
-      axios.post(`http://localhost:3003/api/users`, obj)
+      console.log('ELSE IF OBJ', obj)
+      axios.post(`/api/users/${this.state.currentUser}`, obj)
       .then((res)=>{
         console.log(res.status);
-      })    .catch((e)=>{
+      })
+      .catch((e)=>{
         console.log(e);
       })
-      .then( ()=> axios.get('http://localhost:3003/api/users'))
+      .then( () => axios.get(`/api/users/${this.state.currentUser}`))
       .then((res) => {
         const currentUser = res.data[this.userIndex];
         this.setState({
@@ -169,9 +198,6 @@ class App extends React.Component {
       e.preventDefault();
     }
   }
-
-
-
 
   //end of List form button interrupt
 
@@ -217,36 +243,6 @@ class App extends React.Component {
   }
 
 
-  componentDidMount(){
-    axios.get('http://localhost:3003/api/places', {
-      params: {
-      zipCode: this.state.currentZipCode,
-      beds_number: 15,
-      price: 300
-      }
-    })
-    .then((res)=>{
-      //suppose to do some filtring here?
-
-      console.log(res);
-      const totalplaces = [...res.data.fields].slice(0,12);
-      const fourplaces = [...totalplaces].slice(0,4);
-      this.setState({
-        places: totalplaces,
-        totalplaces: totalplaces
-      })
-    })
-    .then( ()=> axios.get('http://localhost:3003/api/users'))
-    .then((res) => {
-      //taking 1st sample as example
-      const currentUser = res.data[this.userIndex];
-      this.setState({
-        isLoaded:true,
-        user: currentUser
-      })
-    })
-    console.log('mounted')
-  }
 
   render () {
     const {error, isLoaded, places} = this.state;
