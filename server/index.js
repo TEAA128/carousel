@@ -39,17 +39,13 @@ if (cluster.isMaster) {
     Controllers.postNewList(req, res);
   })
 
-  // app.patch('/api/users/:userId', (req,res) => {
-  //   Controllers.toggleLike(req, res)
-  // })
-
   app.listen(port, () => console.log(`App is listening at http://localhost:${port}`));
-}
 
-cluster.on('exit', function(worker, code, signal) {
-  console.log('Worker %d died with code/signal %s. Restarting worker...', worker.process.pid, signal || code);
-  cluster.fork();
-});
+  cluster.on('exit', function(worker, code, signal) {
+    console.log('Worker %d died with code/signal %s. Restarting worker...', worker.process.pid, signal || code);
+    cluster.fork();
+  });
+}
 
 
 
