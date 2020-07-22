@@ -17,8 +17,8 @@ if (cluster.isMaster) {
 } else {
   const app = express();
 
-  app.use(parser.json());
   // app.use(morgan('dev'));
+  app.use(parser.json());
   app.use(cors());
 
   app.use('/', express.static(path.join(__dirname, '..', 'client', 'dist')));
@@ -41,8 +41,4 @@ if (cluster.isMaster) {
 
   app.listen(port, () => console.log(`App is listening at http://localhost:${port}`));
 
-  cluster.on('exit', (worker, code, signal) => {
-    console.log('Worker %d died with code/signal %s. Restarting worker...', worker.process.pid, signal || code);
-    cluster.fork();
-  });
 }
