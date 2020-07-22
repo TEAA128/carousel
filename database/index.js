@@ -6,18 +6,17 @@ const pool = new Pool({
   port: '5432',
   user: 'postgres',
   password: keys.psql_pass,
-  database: 'carousel'
-})
+  database: 'carousel',
+});
 
-
-//test connection
+// test connection
 pool.query('SELECT NOW()', (err, res) => {
   if (err) {
     console.log('FAILED TO CONNECT', err);
   }
   if (res) {
-    console.log('DB CONNECTED')
+    console.log('DB CONNECTED');
   }
-})
+});
 
 module.exports.pool = pool;
