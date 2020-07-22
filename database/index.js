@@ -1,10 +1,14 @@
-const { Pool, Client } = require('pg')
+const { Pool, Client } = require('pg');
+const keys = require('../config.js');
 
 const pool = new Pool({
-  user: 'ozzy_chel',
-  host: 'localhost',
-  database: 'carousel',
+  host: '52.53.164.12',
+  port: '5432',
+  user: 'postgres',
+  password: keys.psql_pass,
+  database: 'carousel'
 })
+
 
 //test connection
 pool.query('SELECT NOW()', (err, res) => {

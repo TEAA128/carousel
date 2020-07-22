@@ -32,54 +32,54 @@ CREATE DATABASE carousel;
     user_id_fk INTEGER REFERENCES users(user_id)
   );
 
-  DROP TABLE IF EXISTS user_likes;
-  CREATE TABLE user_likes (
-    like_id SERIAL PRIMARY KEY,
-    list_id INTEGER REFERENCES user_lists(list_id),
-    place_id INTEGER REFERENCES places(place_id)
-  );
+  -- DROP TABLE IF EXISTS user_likes;
+  -- CREATE TABLE user_likes (
+  --   like_id SERIAL PRIMARY KEY,
+  --   list_id INTEGER REFERENCES user_lists(list_id),
+  --   place_id INTEGER REFERENCES places(place_id)
+  -- );
 
 COPY places(title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
-FROM '/home/ec2-user/data/generatePlace1.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generatePlace1.csv' DELIMITER ',' CSV HEADER;
 
 COPY places(title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
-FROM '/home/ec2-user/data/generatePlace2.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generatePlace2.csv' DELIMITER ',' CSV HEADER;
 
 COPY places(title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
-FROM '/home/ec2-user/data/generatePlace3.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generatePlace3.csv' DELIMITER ',' CSV HEADER;
 
 COPY places(title,picture_url,zip_code,type_of_room,beds_number,rating,total_review,plus_host,super_host,price,link)
-FROM '/home/ec2-user/data/generatePlace4.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generatePlace4.csv' DELIMITER ',' CSV HEADER;
 -------------------------------
 -- import users
 COPY users(user_name)
-FROM '/home/ec2-user/data/generateUsers1.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generateUsers1.csv' DELIMITER ',' CSV HEADER;
 
 COPY users(user_name)
-FROM '/home/ec2-user/data/generateUsers2.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generateUsers2.csv' DELIMITER ',' CSV HEADER;
 
 COPY users(user_name)
-FROM '/home/ec2-user/data/generateUsers3.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generateUsers3.csv' DELIMITER ',' CSV HEADER;
 
 COPY users(user_name)
-FROM '/home/ec2-user/data/generateUsers4.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generateUsers4.csv' DELIMITER ',' CSV HEADER;
 -------------------------------
 -- import user_lists
 COPY user_lists(list_name,user_id_fk)
-FROM '/home/ec2-user/data/generateUserLists1.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generateUserLists1.csv' DELIMITER ',' CSV HEADER;
 
 COPY user_lists(list_name,user_id_fk)
-FROM '/home/ec2-user/data/generateUserLists2.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generateUserLists2.csv' DELIMITER ',' CSV HEADER;
 
 COPY user_lists(list_name,user_id_fk)
-FROM '/home/ec2-user/data/generateUserLists3.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generateUserLists3.csv' DELIMITER ',' CSV HEADER;
 
 COPY user_lists(list_name,user_id_fk)
-FROM '/home/ec2-user/data/generateUserLists4.csv' DELIMITER ',' CSV HEADER;
+FROM '/tmp/data2/generateUserLists4.csv' DELIMITER ',' CSV HEADER;
 ------------------------------
 -- import user_likes
-COPY user_likes(list_id,place_id)
-FROM '/home/ec2-user/data/generateUserLikes1.csv' DELIMITER ',' CSV HEADER;
+-- COPY user_likes(list_id,place_id)
+-- FROM '/tmp/data2/generateUserLikes1.csv' DELIMITER ',' CSV HEADER;
 
 -- create indexes
 CREATE INDEX CONCURRENTLY zipcode_idx ON places (zip_code);
@@ -88,4 +88,4 @@ CREATE INDEX CONCURRENTLY places_price_idx ON places (price);
 CREATE INDEX CONCURRENTLY userid_idx ON users (user_id);
 CREATE INDEX CONCURRENTLY user_name_idx ON users (user_name);
 CREATE INDEX CONCURRENTLY user_id_fk_idx ON user_lists (user_id_fk);
-CREATE INDEX CONCURRENTLY likes_listid_idx ON user_likes (list_id);
+-- CREATE INDEX CONCURRENTLY likes_listid_idx ON user_likes (list_id);
