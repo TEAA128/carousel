@@ -22,7 +22,7 @@ class App extends React.Component {
       clickedplace: {},
       enablesubmitbutton: false,
       modelOpen: false,
-      currentUser: 1000000,
+      currentUser: 5000000,
       currentZip: '94116',
       currentBeds: '15',
       currentPrice: '300'
