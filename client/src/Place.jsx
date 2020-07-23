@@ -53,7 +53,12 @@ const Place = ({place, heartClicked, likeplace}) => {
     <li className={styles.listli}>
       <div className={styles.container}>
         <div className={styles.flexbox_container}>
-          <img className={styles.placeimg} src={place.picture} width="265" height="177" />
+          <img
+            className={styles.placeimg}
+            src="./default.jpg"
+            // src={place.picture}
+            width="265"
+            height="177" />
           <a className={styles.imgsrc} href={place.src} />
           <button className={styles.heartbutton} onClick={()=>heartClicked(place)}>
             <div className={styles.heartTextFix}>
